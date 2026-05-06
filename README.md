@@ -1,3 +1,5 @@
+I got tired of looking for newly posted jobs on LinkedIn. They were either not related to what I was looking for, or they already had 100+ applicants. So, I built myself a scraper that runs every 15 minutes on AWS, looks up newly posted jobs, filters them and sends me a notification on Discord.
+
 # Serverless Job Market Extraction Pipeline
 
 An automated, event-driven data extraction pipeline designed to scrape, normalize, and distribute highly targeted job market data from enterprise Applicant Tracking Systems (ATS) and job boards. 
@@ -26,3 +28,5 @@ This project bypasses traditional front-end scraping where possible, utilizing r
 1. Clone the repository and install the dependencies:
    ```bash
    pip install requests beautifulsoup4 curl_cffi python-dotenv
+
+<img width="1227" height="655" alt="image" src="https://github.com/user-attachments/assets/6d7575c8-969c-482e-8a92-00a7b87bc477" />
