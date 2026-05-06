@@ -1,38 +1,24 @@
 import os
 import time
 import random
-import sqlite3
+import logging
 import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
 from curl_cffi import requests as curl_requests
 import hashlib
 import boto3
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def get_dynamodb_table():
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     return dynamodb.Table('seenJobs')
 
-load_dotenv()
-
-# def setup_db():
-#     conn = sqlite3.connect('local_jobs.db')
-#     conn.execute('''
-#         CREATE TABLE IF NOT EXISTS seen_jobs (
-#             job_id      TEXT PRIMARY KEY,
-#             title       TEXT,
-#             company     TEXT,
-#             link        TEXT,
-#             first_seen  TEXT
-#         )
-#     ''')
-#     conn.commit()
-#     return conn
-
 def notify_discord(title, link, company_name):
     webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
     if not webhook_url:
-        print("Missing Webhook URL!")
+        logger.error("Missing Webhook URL!")
         return
         
     data = {"content": f"🚨 **New Role at {company_name}:**\n**{title}**\n{link}"}
@@ -55,7 +41,7 @@ def is_entry_level(title):
     return not any(flag in title_lower for flag in seniority_flags)
 
 def fetch_workday_jobs(company):
-    print(f"Fetching Workday: {company['name']}...")
+    logger.info(f"Fetching Workday: {company['name']}...")
     headers = {"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"}
     session = requests.Session()
     normalized_jobs = []
@@ -73,13 +59,13 @@ def fetch_workday_jobs(company):
         response = session.post(company["url"], json=payload, headers=headers)
 
         if response.status_code != 200:
-            print(f"  {company['name']} returned {response.status_code}, stopping.")
+            logger.warning(f"{company['name']} returned {response.status_code}, stopping.")
             break
 
         data = response.json()
         if total is None:
             total = data.get("total")
-            print(f"  {company['name']}: {total} total jobs found")
+            logger.info(f"{company['name']}: {total} total jobs found")
             if total == 0:
                 break
         batch = data.get("jobPostings", [])
@@ -94,7 +80,7 @@ def fetch_workday_jobs(company):
                 "link": f"{company['base_url']}{job.get('externalPath')}"
             })
 
-        print(f"  {company['name']}: fetched {offset + len(batch)} of {total}")
+        logger.info(f"{company['name']}: fetched {offset + len(batch)} of {total}")
         offset += limit
 
         if offset >= total:
@@ -105,7 +91,7 @@ def fetch_workday_jobs(company):
     return normalized_jobs
 
 def fetch_phenom_jobs(company):
-    print(f"Fetching Phenom: {company['name']}...")
+    logger.info(f"Fetching Phenom: {company['name']}...")
     headers = {"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"}
     session = requests.Session()
     normalized_jobs = []
@@ -121,11 +107,10 @@ def fetch_phenom_jobs(company):
             response = session.post(company["api_url"], json=payload, headers=headers)
             
             if response.status_code != 200:
-                print(f"  {company['name']} returned {response.status_code}, stopping.")
+                logger.warning(f"{company['name']} returned {response.status_code}, stopping.")
                 break
                 
             data = response.json()
-            # print(data)
             job_list = data.get('refineSearch', {}).get('data', {}).get('jobs', [])
             total_hits = data.get('refineSearch', {}).get('totalHits', 0)
             
@@ -142,7 +127,7 @@ def fetch_phenom_jobs(company):
                     "link": job_link
                 })
             
-            print(f"  {company['name']}: fetched {offset + len(job_list)} of {total_hits}")
+            logger.info(f"{company['name']}: fetched {offset + len(job_list)} of {total_hits}")
             offset += limit
             
             if offset >= total_hits:
@@ -150,13 +135,13 @@ def fetch_phenom_jobs(company):
                 
             time.sleep(random.uniform(1.5, 3.0))
         except Exception as e:
-            print(f"Error fetching {company['name']}: {e}")
+            logger.error(f"Error fetching {company['name']}: {e}")
             break
             
     return normalized_jobs
 
 def fetch_successfactors_jobs(company):
-    print(f"Fetching SuccessFactors: {company['name']}...")
+    logger.info(f"Fetching SuccessFactors: {company['name']}...")
     normalized_jobs = []
     startrow = 0
     
@@ -204,18 +189,18 @@ def fetch_successfactors_jobs(company):
                     "link": full_link
                 })
             
-            print(f"  {company['name']}: fetched {len(valid_links)} jobs from page starting at {startrow}")
+            logger.info(f"{company['name']}: fetched {len(valid_links)} jobs from page starting at {startrow}")
             startrow += 25
             time.sleep(random.uniform(1.5, 3.0))
             
         except Exception as e:
-            print(f"Error fetching {company['name']}: {e}")
+            logger.error(f"Error fetching {company['name']}: {e}")
             break
             
     return normalized_jobs
 
 def fetch_eluta():
-    print("Fetching Eluta.ca (HTML Scraping)...")
+    logger.info("Fetching Eluta.ca (HTML Scraping)...")
     url = "https://www.eluta.ca/search?q=software+developer+OR+data+analyst&l=Ontario"
     
     try:
@@ -235,29 +220,8 @@ def fetch_eluta():
                 })
         return normalized_jobs
     except Exception as e:
-        print(f"Failed to bypass Eluta: {e}")
+        logger.error(f"Failed to bypass Eluta: {e}")
         return []
-
-# def process_jobs(jobs, company_name, conn): 
-#     for job in jobs:
-#         if not (is_target_field(job['title']) and is_entry_level(job['title'])):
-#             continue
-
-#         job_id = f"{company_name}_{get_safe_id(job)}"
-
-#         row = conn.execute(
-#             "SELECT 1 FROM seen_jobs WHERE job_id = ?", (job_id,)
-#         ).fetchone()
-
-#         if not row:
-#             print(f"✅ {job['title']} at {company_name}")
-#             notify_discord(job['title'], job['link'], company_name)
-#             conn.execute(
-#                 "INSERT INTO seen_jobs VALUES (?, ?, ?, ?, ?)",
-#                 (job_id, job['title'], company_name, job['link'],
-#                  time.strftime('%Y-%m-%d %H:%M:%S'))
-#             )
-#             conn.commit()
 
 def process_jobs(jobs, company_name, table): 
     for job in jobs:
@@ -269,6 +233,7 @@ def process_jobs(jobs, company_name, table):
         response = table.get_item(Key={'job_id': job_id})
 
         if 'Item' not in response:
+            logger.info(f"✅ {job['title']} at {company_name}")
             notify_discord(job['title'], job['link'], company_name)
             
             table.put_item(
@@ -281,8 +246,7 @@ def process_jobs(jobs, company_name, table):
                 }
             )
 
-def main():
-    # conn = setup_db()
+def lambda_handler(event, context):
     table = get_dynamodb_table()
 
     WORKDAY_COMPANIES = [
@@ -344,11 +308,6 @@ def main():
     ]
 
     SUCCESSFACTORS_COMPANIES = [
-        # {
-        #     "name": "Deloitte",
-        #     "search_url": "https://careers.deloitte.ca/search/?q=&locationsearch=Ontario",
-        #     "base_url": "https://careers.deloitte.ca"
-        # },
         {
             "name": "Scotiabank",
             "search_url": "https://jobs.scotiabank.com/search/?q=&locationsearch=Toronto",
@@ -363,21 +322,20 @@ def main():
 
     for company in PHENOM_COMPANIES:
         jobs = fetch_phenom_jobs(company)
-        # print(jobs)
         process_jobs(jobs, company["name"], table)
         time.sleep(random.uniform(2, 4))
 
     for company in SUCCESSFACTORS_COMPANIES:
         jobs = fetch_successfactors_jobs(company)
-        # print(jobs)
         process_jobs(jobs, company["name"], table)
         time.sleep(random.uniform(2, 4))
 
     eluta_jobs = fetch_eluta()
     process_jobs(eluta_jobs, "Eluta", table)  
 
-    print("\nDone.")
-    # conn.close()
-
-if __name__ == "__main__":
-    main()
+    logger.info("Done.")
+    
+    return {
+        'statusCode': 200,
+        'body': 'Scrape completed successfully'
+    }
