@@ -1,0 +1,22 @@
+name: Deploy Scraper to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: zip -r function.zip app.py
+      - uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::816975652129:role/GitHubActionsLambdaRole
+          aws-region: us-east-1
+      - run: aws lambda update-function-code --function-name JobScraperEngine --zip-file fileb://function.zip
