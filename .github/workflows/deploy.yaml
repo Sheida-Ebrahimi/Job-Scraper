@@ -1,11 +1,14 @@
 name: Deploy Docker Scraper to AWS Lambda
+
 on:
   push:
     branches:
       - main
+
 permissions:
   id-token: write
   contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,7 +28,4 @@ jobs:
           docker tag job-scraper-engine:latest 816975652129.dkr.ecr.us-east-1.amazonaws.com/job-scraper-repo:latest
           docker push 816975652129.dkr.ecr.us-east-1.amazonaws.com/job-scraper-repo:latest
 
-      - run: |
-          aws lambda update-function-code \
-            --function-name JobScraperEngine \
-            --image-uri 816975652129.dkr.ecr.us-east-1.amazonaws.com/job-scraper-repo:latest
+      - run: aws lambda update-function-code --function-name job-scraper --image-uri 816975652129.dkr.ecr.us-east-1.amazonaws.com/job-scraper-repo:latest
