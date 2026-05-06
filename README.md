@@ -21,7 +21,7 @@ This project bypasses traditional front-end scraping where possible, utilizing r
 
 *   `app.py`: The production-ready AWS Lambda handler using `boto3` for DynamoDB integration.
 *   `local_test.py`: A local development environment utilizing `sqlite3` for rapid testing and API endpoint debugging without incurring cloud reads/writes.
-*   `.github/workflows/deploy.yml`: The CI/CD pipeline for automated AWS deployment.
+*   `.github/workflows/deploy.yml`: The CI/CD pipeline for automated AWS deployment and Dockerization.
 
 ## Local Development Setup
 
