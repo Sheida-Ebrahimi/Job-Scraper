@@ -20,9 +20,11 @@ def notify_discord(title, link, company_name):
     if not webhook_url:
         logger.error("Missing Webhook URL!")
         return
-        
-    data = {"content": f"🚨 **New Role at {company_name}:**\n**{title}**\n{link}"}
-    requests.post(webhook_url, json=data)
+    try:
+        data = {"content": f"🚨 **New Role at {company_name}:**\n**{title}**\n{link}"}
+        requests.post(webhook_url, json=data, timeout=5)
+    except Exception as e:
+        logger.error(f"Discord notification failed: {e}")
 
 def get_safe_id(job):
     if job.get('id'):
@@ -31,12 +33,12 @@ def get_safe_id(job):
     return hashlib.md5(fallback_string.encode('utf-8')).hexdigest()
 
 def is_target_field(title):
-    target_keywords = ["software", "developer", "data analyst", "data science", "python", "react", "sql", "machine learning", "agentic", "ai", "scientist", "mobile"]
+    target_keywords = ["software", "developer", "data analyst", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
     title_lower = title.lower()
     return any(keyword in title_lower for keyword in target_keywords)
 
 def is_entry_level(title):
-    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "Intern", "chief", "advisor"]
+    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor"]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
 
@@ -97,6 +99,7 @@ def fetch_phenom_jobs(company):
     normalized_jobs = []
     limit = 10
     offset = 0
+    total_hits = None
     
     while True:
         payload = company["payload"].copy()
@@ -111,6 +114,11 @@ def fetch_phenom_jobs(company):
                 break
                 
             data = response.json()
+            if total_hits is None:
+                total_hits = data.get('refineSearch', {}).get('totalHits', 0)
+            if total_hits == 0:
+                break
+            
             job_list = data.get('refineSearch', {}).get('data', {}).get('jobs', [])
             total_hits = data.get('refineSearch', {}).get('totalHits', 0)
             
@@ -140,12 +148,17 @@ def fetch_phenom_jobs(company):
             
     return normalized_jobs
 
-def fetch_successfactors_jobs(company):
+def fetch_successfactors_jobs(company, max_pages=10):
     logger.info(f"Fetching SuccessFactors: {company['name']}...")
     normalized_jobs = []
     startrow = 0
+    pages_fetched = 0
     
     while True:
+        if pages_fetched >= max_pages:
+            logger.info(f"Reached max pages limit ({max_pages}) for {company['name']}.")
+            break
+
         url = f"{company['search_url']}&startrow={startrow}"
         
         try:
@@ -191,6 +204,7 @@ def fetch_successfactors_jobs(company):
             
             logger.info(f"{company['name']}: fetched {len(valid_links)} jobs from page starting at {startrow}")
             startrow += 25
+            pages_fetched += 1
             time.sleep(random.uniform(1.5, 3.0))
             
         except Exception as e:
@@ -225,26 +239,29 @@ def fetch_eluta():
 
 def process_jobs(jobs, company_name, table): 
     for job in jobs:
-        if not (is_target_field(job['title']) and is_entry_level(job['title'])):
-            continue
+        try:
+            if not (is_target_field(job['title']) and is_entry_level(job['title'])):
+                continue
 
-        job_id = f"{company_name}_{get_safe_id(job)}"
+            job_id = f"{company_name}_{get_safe_id(job)}"
 
-        response = table.get_item(Key={'job_id': job_id})
+            response = table.get_item(Key={'job_id': job_id})
 
-        if 'Item' not in response:
-            logger.info(f"✅ {job['title']} at {company_name}")
-            notify_discord(job['title'], job['link'], company_name)
-            
-            table.put_item(
-                Item={
-                    'job_id': job_id,
-                    'title': job['title'],
-                    'company': company_name,
-                    'link': job['link'],
-                    'first_seen': time.strftime('%Y-%m-%d %H:%M:%S')
-                }
-            )
+            if 'Item' not in response:
+                logger.info(f"✅ {job['title']} at {company_name}")
+                notify_discord(job['title'], job['link'], company_name)
+                
+                table.put_item(
+                    Item={
+                        'job_id': job_id,
+                        'title': job['title'],
+                        'company': company_name,
+                        'link': job['link'],
+                        'first_seen': time.strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                )
+        except Exception as e:
+            logger.error(f"Failed to process job {job.get('title', 'Unknown')} at {company_name}: {e}")
 
 def lambda_handler(event, context):
     table = get_dynamodb_table()
@@ -326,7 +343,7 @@ def lambda_handler(event, context):
         time.sleep(random.uniform(2, 4))
 
     for company in SUCCESSFACTORS_COMPANIES:
-        jobs = fetch_successfactors_jobs(company)
+        jobs = fetch_successfactors_jobs(company, max_pages=10)
         process_jobs(jobs, company["name"], table)
         time.sleep(random.uniform(2, 4))
 
