@@ -38,7 +38,7 @@ def is_target_field(title):
     return any(keyword in title_lower for keyword in target_keywords)
 
 def is_entry_level(title):
-    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor"]
+    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor", "CFO"]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
 
@@ -276,7 +276,7 @@ def lambda_handler(event, context):
         {
             "name": "TD Bank",
             "url": "https://td.wd3.myworkdayjobs.com/wday/cxs/td/TD_Bank_Careers/jobs",
-            "base_url": "https://td.wd3.myworkdayjobs.com/en-US/TD_Careers",
+            "base_url": "https://td.wd3.myworkdayjobs.com/en-US/TD_Bank_Careers",
             "payload": {"appliedFacets":{"timeType":["14c9322ea8e3014f4096d9d2dc025400"],"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"],"locations":["dafbf576c2d2100094503f8698660000","dafbf576c2d2100094539f216ab80000","dafbf576c2d210009450432084160000","dafbf576c2d2100094507c2260ea0000"]},"limit":20,"offset":0,"searchText":""}
         },
         {
