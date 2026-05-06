@@ -4,7 +4,7 @@ I got tired of looking for newly posted jobs on LinkedIn. They were either not r
 
 An automated, event-driven data extraction pipeline designed to scrape, normalize, and distribute highly targeted job market data from enterprise Applicant Tracking Systems (ATS) and job boards. 
 
-**Architecture:** Serverless (AWS Lambda, DynamoDB(NoSQL), EventBridge)  
+**Architecture:** Serverless (AWS Lambda, DynamoDB (NoSQL), EventBridge)  
 **Core Technologies:** Python, `boto3`, `curl_cffi`, `BeautifulSoup`
 
 ## Architecture Overview
