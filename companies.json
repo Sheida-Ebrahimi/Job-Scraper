@@ -1,6 +1,36 @@
 {
   "workday": [
     {
+      "name": "Hitachi",
+      "url": "https://gtsgbu.wd3.myworkdayjobs.com/wday/cxs/gtsgbu/Careers/jobs",
+      "base_url": "https://gtsgbu.wd3.myworkdayjobs.com/en-US/Careers?source=hitachi_careers&source=hitachi.com&bid=0&tid=x_bfe0a080-4d5f-499c-84e5-93e09f6900d0",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+    },
+    {
+      "name": "Fidelity Canada",
+      "url": "https://fil.wd3.myworkdayjobs.com/wday/cxs/fil/fidelitycanada/jobs",
+      "base_url": "https://fil.wd3.myworkdayjobs.com/fidelitycanada",
+      "payload": {"appliedFacets":{"locations":["20a9a0e8b147013d7f93c34ee14dd327"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
+      "name": "Canadian Tire",
+      "url": "https://canadiantirecorporation.wd3.myworkdayjobs.com/wday/cxs/canadiantirecorporation/Enterprise_External_Careers_Site/jobs",
+      "base_url": "https://canadiantirecorporation.wd3.myworkdayjobs.com/Enterprise_External_Careers_Site",
+      "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"],"locations":["a4710df742e51025b1c3cc6c9e320000"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
+      "name": "Aviva Canada",
+      "url": "https://aviva.wd1.myworkdayjobs.com/wday/cxs/aviva/External/jobs",
+      "base_url": "https://aviva.wd1.myworkdayjobs.com/External?Location_Country=a30a87ed25634629aa6c3958aa2b91ea",
+      "payload": {"appliedFacets":{"Location_Country":["a30a87ed25634629aa6c3958aa2b91ea"],"locations":["51f8f16388b2015a00a934356b4af085"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
+      "name": "Intact Financial",
+      "url": "https://intactfc.wd3.myworkdayjobs.com/en-US/intactfc",
+      "base_url": "https://intact.wd3.myworkdayjobs.com/en-US/External",
+      "payload": {"appliedFacets":{"locations":["e47af1c5574a1001aae06d83a0a00000","614baa0178de1001ae2d6a4d63cb0000"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
             "name": "CIBC",
             "url": "https://cibc.wd3.myworkdayjobs.com/wday/cxs/cibc/search/jobs",
             "base_url": "https://cibc.wd3.myworkdayjobs.com/en-US/search",
@@ -60,6 +90,11 @@
       "name": "Scotiabank",
       "search_url": "https://jobs.scotiabank.com/search/?q=&locationsearch=Toronto",
       "base_url": "https://jobs.scotiabank.com"
+    },
+    {
+      "name": "City of Toronto",
+      "search_url": "https://jobs.toronto.ca/jobsatcity/search/?q=&locationsearch=Toronto",
+      "base_url": "https://jobs.toronto.ca"
     }
   ],
   "greenhouse": [
