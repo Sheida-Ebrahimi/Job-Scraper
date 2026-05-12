@@ -4,7 +4,7 @@
       "name": "Hitachi",
       "url": "https://gtsgbu.wd3.myworkdayjobs.com/wday/cxs/gtsgbu/Careers/jobs",
       "base_url": "https://gtsgbu.wd3.myworkdayjobs.com/en-US/Careers",
-      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+      "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
     },
     {
       "name": "Fidelity Canada",
