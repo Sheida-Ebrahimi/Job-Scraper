@@ -63,17 +63,11 @@
     }
   ],
   "greenhouse": [
-    {
-      "name": "Wealthsimple",
-      "board_token": "wealthsimple"
-    },
-    {
-      "name": "Discord",
-      "board_token": "discord"
-    },
+    
     {
       "name": "Pinterest",
-      "board_token": "pinterest"
+      "board_token": "pinterest",
+      "locations": ["toronto", "canada"]
     }
   ]
 }

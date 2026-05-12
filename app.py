@@ -226,8 +226,14 @@ def fetch_greenhouse_jobs(company):
 
         data = response.json()
         normalized_jobs = []
+        target_locations = company.get('locations')
         
         for job in data.get('jobs', []):
+            if target_locations:
+                location_name = job.get('location', {}).get('name', '').lower()
+                if not any(loc.lower() in location_name for loc in target_locations):
+                    continue
+                    
             normalized_jobs.append({
                 "id": str(job.get('id')),
                 "title": job.get('title', ''),
