@@ -46,7 +46,7 @@
       "name": "Manulife",
       "url": "https://manulife.wd3.myworkdayjobs.com/wday/cxs/manulife/MFCJH_Jobs/jobs",
       "base_url": "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs",
-      "payload": {"appliedFacets": {"Location_Country": ["a30a87ed25634629aa6c3958aa2b91ea"]}, "limit": 20, "offset": 0, "searchText": ""}
+      "payload": {"appliedFacets":{"locations":["90905028607c019c77b34f1f8257fee2","f4f0c297dfca4db48066e45d00ca3910","0a7b3e391e784b38a983c4361ecba51c"]},"limit":20,"offset":0,"searchText":""}
     },
     {
       "name": "Sun Life",
