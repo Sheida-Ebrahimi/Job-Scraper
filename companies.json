@@ -58,7 +58,7 @@
       "name": "Intact Financial",
       "url": "https://intactfc.wd3.myworkdayjobs.com/wday/cxs/intactfc/intactfc/jobs",
       "base_url": "https://intactfc.wd3.myworkdayjobs.com/en-US/intactfc",
-      "payload": {}
+      "payload": {"appliedFacets":{"locations":["e47af1c5574a1001aae06d83a0a00000","614baa0178de1001ae2d6a4d63cb0000"]},"limit":20,"offset":0,"searchText":""}
     },
     {
       "name": "Loblaw",
@@ -70,7 +70,7 @@
       "name": "General Motors",
       "url": "https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs",
       "base_url": "https://generalmotors.wd5.myworkdayjobs.com/en-US/Careers_GM",
-      "payload": {}
+      "payload": {"appliedFacets":{"locations":["88b46ead68660128a3e7cb81b5599f64","d5cdc59b5cbe017126a2c802b71f490b"]},"limit":20,"offset":0,"searchText":""}
     }
   ],
   "phenom": [
