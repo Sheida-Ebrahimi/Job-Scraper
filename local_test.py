@@ -304,28 +304,35 @@ def main():
         conn.close()
         return
 
+    test_targets = [] # change this to test specific company, if left empty it will test everything in the companies.json
+
     for company in config.get('workday', []):
-        jobs = fetch_workday_jobs(company)
-        process_jobs(jobs, company["name"], c, conn)
-        time.sleep(random.uniform(2, 4))
+        if not test_targets or company["name"] in test_targets:
+            jobs = fetch_workday_jobs(company)
+            process_jobs(jobs, company["name"], c, conn)
+            time.sleep(random.uniform(2, 4))
 
     for company in config.get('phenom', []):
-        jobs = fetch_phenom_jobs(company)
-        process_jobs(jobs, company["name"], c, conn)
-        time.sleep(random.uniform(2, 4))
+        if not test_targets or company["name"] in test_targets:
+            jobs = fetch_phenom_jobs(company)
+            process_jobs(jobs, company["name"], c, conn)
+            time.sleep(random.uniform(2, 4))
 
     for company in config.get('successfactors', []):
-        jobs = fetch_successfactors_jobs(company, max_pages=10)
-        process_jobs(jobs, company["name"], c, conn)
-        time.sleep(random.uniform(2, 4))
+        if not test_targets or company["name"] in test_targets:
+            jobs = fetch_successfactors_jobs(company, max_pages=10)
+            process_jobs(jobs, company["name"], c, conn)
+            time.sleep(random.uniform(2, 4))
 
     for company in config.get('greenhouse', []):
-        jobs = fetch_greenhouse_jobs(company)
-        process_jobs(jobs, company["name"], c, conn)
-        time.sleep(random.uniform(1.5, 3))
+        if not test_targets or company["name"] in test_targets:
+            jobs = fetch_greenhouse_jobs(company)
+            process_jobs(jobs, company["name"], c, conn)
+            time.sleep(random.uniform(1.5, 3))
 
-    eluta_jobs = fetch_eluta()
-    process_jobs(eluta_jobs, "Eluta", c, conn)  
+    if not test_targets or "Eluta" in test_targets:
+        eluta_jobs = fetch_eluta()
+        process_jobs(eluta_jobs, "Eluta", c, conn)  
 
     print("Done.")
     conn.close()

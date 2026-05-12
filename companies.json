@@ -25,12 +25,6 @@
       "payload": {"appliedFacets": {"Location_Country": ["a30a87ed25634629aa6c3958aa2b91ea"], "locations": ["51f8f16388b2015a00a934356b4af085"]}, "limit": 20, "offset": 0, "searchText": ""}
     },
     {
-      "name": "Intact Financial",
-      "url": "https://intactfc.wd3.myworkdayjobs.com/wday/cxs/intactfc/External/jobs",
-      "base_url": "https://intactfc.wd3.myworkdayjobs.com/en-US/External",
-      "payload": {"appliedFacets": {"locations": ["e47af1c5574a1001aae06d83a0a00000", "614baa0178de1001ae2d6a4d63cb0000"]}, "limit": 20, "offset": 0, "searchText": ""}
-    },
-    {
       "name": "CIBC",
       "url": "https://cibc.wd3.myworkdayjobs.com/wday/cxs/cibc/search/jobs",
       "base_url": "https://cibc.wd3.myworkdayjobs.com/en-US/search",
@@ -60,23 +54,23 @@
       "base_url": "https://sunlife.wd3.myworkdayjobs.com/en-US/Experienced",
       "payload": {"appliedFacets": {"Location_Country": ["a30a87ed25634629aa6c3958aa2b91ea"]}, "limit": 20, "offset": 0, "searchText": ""}
     },
+{
+      "name": "Intact Financial",
+      "url": "https://intactfc.wd3.myworkdayjobs.com/wday/cxs/intactfc/intactfc/jobs",
+      "base_url": "https://intactfc.wd3.myworkdayjobs.com/en-US/intactfc",
+      "payload": {}
+    },
     {
       "name": "Loblaw",
-      "url": "https://loblaw.wd3.myworkdayjobs.com/wday/cxs/loblaw/Loblaw_Careers/jobs",
-      "base_url": "https://loblaw.wd3.myworkdayjobs.com/en-US/Loblaw_Careers",
-      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+      "url": "https://myview.wd3.myworkdayjobs.com/wday/cxs/myview/loblaw_careers/jobs",
+      "base_url": "https://myview.wd3.myworkdayjobs.com/en-US/loblaw_careers",
+      "payload": {}
     },
     {
       "name": "General Motors",
-      "url": "https://gm.wd5.myworkdayjobs.com/wday/cxs/gm/Careers_GM/jobs",
-      "base_url": "https://gm.wd5.myworkdayjobs.com/en-US/Careers_GM",
-      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
-    },
-    {
-      "name": "Safran",
-      "url": "https://safran.wd3.myworkdayjobs.com/wday/cxs/safran/Safran/jobs",
-      "base_url": "https://safran.wd3.myworkdayjobs.com/en-US/Safran",
-      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+      "url": "https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs",
+      "base_url": "https://generalmotors.wd5.myworkdayjobs.com/en-US/Careers_GM",
+      "payload": {}
     }
   ],
   "phenom": [
