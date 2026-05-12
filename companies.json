@@ -1,0 +1,79 @@
+{
+  "workday": [
+    {
+            "name": "CIBC",
+            "url": "https://cibc.wd3.myworkdayjobs.com/wday/cxs/cibc/search/jobs",
+            "base_url": "https://cibc.wd3.myworkdayjobs.com/en-US/search",
+            "payload": {"appliedFacets":{"timeType":["382086945f8001182c270bf1860a7f00"],"Country":["a30a87ed25634629aa6c3958aa2b91ea"],"City":["5a781e4ad9710113e8f4efbb1701cf1a","b95eb8c55e341001547de090da5d0000","5a781e4ad97101047818f3db1701363b","5a781e4ad97101140319dbb517015508","5a781e4ad9710142c57479dc17012a3d","5a781e4ad97101be1db246dc17017b3c"]},"limit":20,"offset":0,"searchText":""}
+        },
+        {
+            "name": "TD Bank",
+            "url": "https://td.wd3.myworkdayjobs.com/wday/cxs/td/TD_Bank_Careers/jobs",
+            "base_url": "https://td.wd3.myworkdayjobs.com/en-US/TD_Bank_Careers",
+            "payload": {"appliedFacets":{"timeType":["14c9322ea8e3014f4096d9d2dc025400"],"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"],"locations":["dafbf576c2d2100094503f8698660000","dafbf576c2d2100094539f216ab80000","dafbf576c2d210009450432084160000","dafbf576c2d2100094507c2260ea0000"]},"limit":20,"offset":0,"searchText":""}
+        },
+        {
+            "name": "BMO",
+            "url": "https://bmo.wd3.myworkdayjobs.com/wday/cxs/bmo/External/jobs",
+            "base_url": "https://bmo.wd3.myworkdayjobs.com/en-US/External",
+            "payload": {"appliedFacets":{"timeType":["027a38bd0f0901102412b6de9c095800"],"Country":["a30a87ed25634629aa6c3958aa2b91ea"],"State__Region__Province":["218a720b28a74c67b5c6d42c00bdadfa"],"Location":["c3170091f3cd01dec314cd815f01e2bd","c3170091f3cd012415f62c805f01e3b7","c3170091f3cd01d5f0354a805f0156b8","c3170091f3cd0103127b9d815f0133bd","c3170091f3cd01ad2d6aa3815f014cbd","c3170091f3cd01fb537039805f0110b8","c3170091f3cd01e24be626805f01d4b7","c3170091f3cd0153f61737805f0106b8","c3170091f3cd0140501721805f01bbb7","c3170091f3cd01974d8225805f01cfb7","c3170091f3cd01b6477d40805f012eb8","c3170091f3cd013d8503b07d5f01baae","c3170091f3cd01c2179175815f01a7bc","c3170091f3cd01561deeff805f01e5ba","c3170091f3cd01dcfa59da7f5f01c6b6"]},"limit":20,"offset":0,"searchText":""}
+        },
+        {
+            "name": "Manulife",
+            "url": "https://manulife.wd3.myworkdayjobs.com/wday/cxs/manulife/MFCJH_Jobs/jobs",
+            "base_url": "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs",
+            "payload": {"appliedFacets":{"locations":["90905028607c019c77b34f1f8257fee2","619830580a890128c79fff273301b3ea","f4f0c297dfca4db48066e45d00ca3910","0a7b3e391e784b38a983c4361ecba51c","83a764f8e3b448af8d701dd00641d398","c36bf68faa714152ae93b4e33a796b78","2c3065029f424702a9f2e6dad0d0c72c","8d41c303346b498d8e79ebbcd5a607d0"],"timeType":["37bbc660cc294a08b29221afba09224f"],"Location_Country":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
+        },
+        {
+            "name": "Sun Life",
+            "url": "https://sunlife.wd3.myworkdayjobs.com/wday/cxs/sunlife/Experienced/jobs",
+            "base_url": "https://sunlife.wd3.myworkdayjobs.com/en-US/Experienced",
+            "payload": {"appliedFacets":{"primaryLocation":["07092c6e50bc0134d3a5a00a192d6813","07092c6e50bc0127378d190c192de914","7b5336816d4310d054d2c9e19854324d","07092c6e50bc0196a39a9c09192d5a12"],"timeType":["902e0bbe2cc64592936970c0054c6369"],"Location_Country":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
+        }
+  ],
+  "phenom": [
+    {
+            "name": "RBC",
+            "api_url": "https://jobs.rbc.com/widgets",
+            "base_url": "https://jobs.rbc.com/ca/en",
+            "payload": {
+                "country": "ca", "lang": "en_ca", "deviceType": "desktop",
+                "ddoKey": "refineSearch", "siteType": "external",
+                "jobs": "True", 
+                "selected_fields": {"state": ["Ontario"]}
+            }
+        },
+        {
+            "name": "Bell",
+            "api_url": "https://jobs.bell.ca/widgets",
+            "base_url": "https://jobs.bell.ca/ca/en",
+            "payload": {
+                "country": "ca", "lang": "en_ca", "deviceType": "desktop",
+                "ddoKey": "refineSearch", "siteType": "external",
+                "jobs": "True", 
+                "selected_fields": {"state": ["Ontario"]}
+            }
+        }
+  ],
+  "successfactors": [
+    {
+      "name": "Scotiabank",
+      "search_url": "https://jobs.scotiabank.com/search/?q=&locationsearch=Toronto",
+      "base_url": "https://jobs.scotiabank.com"
+    }
+  ],
+  "greenhouse": [
+    {
+      "name": "Wealthsimple",
+      "board_token": "wealthsimple"
+    },
+    {
+      "name": "Discord",
+      "board_token": "discord"
+    },
+    {
+      "name": "Pinterest",
+      "board_token": "pinterest"
+    }
+  ]
+}
