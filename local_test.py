@@ -36,8 +36,7 @@ def get_safe_id(job):
     return hashlib.md5(fallback_string.encode('utf-8')).hexdigest()
 
 def is_target_field(title):
-    target_keywords = ["software", "developer", "data analyst", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
-    title_lower = title.lower()
+    target_keywords = target_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
     return any(keyword in title_lower for keyword in target_keywords)
 
 def is_entry_level(title):
