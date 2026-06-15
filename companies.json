@@ -71,6 +71,12 @@
       "url": "https://generalmotors.wd5.myworkdayjobs.com/wday/cxs/generalmotors/Careers_GM/jobs",
       "base_url": "https://generalmotors.wd5.myworkdayjobs.com/en-US/Careers_GM",
       "payload": {"appliedFacets":{"locations":["88b46ead68660128a3e7cb81b5599f64","d5cdc59b5cbe017126a2c802b71f490b"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
+      "name": "OTPP",
+      "url": "https://otppb.wd3.myworkdayjobs.com/wday/cxs/otppb/OntarioTeachers_Careers/jobs",
+      "base_url": "https://otppb.wd3.myworkdayjobs.com/OntarioTeachers_Careers",
+      "payload": {"appliedFacets":{"locations":["b6f626b7ab7701a0ae5ecf057c39295f"]},"limit":20,"offset":0,"searchText":""}
     }
   ],
   "phenom": [
