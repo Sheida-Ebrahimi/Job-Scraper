@@ -18,13 +18,20 @@ def get_db_connection():
     conn.commit()
     return conn, c
 
-def notify_discord(title, link, company_name):
-    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+def notify_discord(title, link, company_name, persona):
+    if persona == "me":
+        webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+        prefix = "🚨 **New Role:**"
+    else:
+        webhook_url = os.getenv("FRIEND_WEBHOOK_URL")
+        prefix = "🤝 **New Friend Role:**"
+
     if not webhook_url:
-        print("Error: Missing Webhook URL!")
+        print(f"Error: Missing Webhook URL for {persona}!")
         return
+
     try:
-        data = {"content": f"🚨 **New Role at {company_name}:**\n**{title}**\n{link}"}
+        data = {"content": f"{prefix} at {company_name}\n**{title}**\n{link}"}
         requests.post(webhook_url, json=data, timeout=5)
     except Exception as e:
         print(f"Error: Discord notification failed: {e}")
@@ -35,12 +42,22 @@ def get_safe_id(job):
     fallback_string = f"{job.get('title', '')}{job.get('link', '')}"
     return hashlib.md5(fallback_string.encode('utf-8')).hexdigest()
 
-def is_target_field(title):
-    target_keywords = target_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
-    return any(keyword in title_lower for keyword in target_keywords)
+def check_personas(title):
+    title_lower = title.lower()
+    personas = []
+    
+    my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
+    if any(keyword in title_lower for keyword in my_keywords):
+        personas.append("me")
+        
+    friend_keywords = ["payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator"]
+    if any(keyword in title_lower for keyword in friend_keywords):
+        personas.append("friend")
+        
+    return personas
 
 def is_entry_level(title):
-    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor"]
+    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp"]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
 
@@ -271,26 +288,104 @@ def fetch_eluta():
         print(f"Error: Failed to bypass Eluta: {e}")
         return []
 
-def process_jobs(jobs, company_name, c, conn): 
+def fetch_careerbeacon():
+    print("Fetching CareerBeacon for Friend...")
+    # Cleaned up query targeting the exact roles requested
+    query = "Payment Processing Analyst,Operations Analyst,Back Office Operations Associate,Banking Operations Coordinator,Transaction Processing Specialist,QA,Software Engineer in Test"
+    url = f"https://www.careerbeacon.com/en/search?q={requests.utils.quote(query)}&l=Ontario"
+    
+    try:
+        response = curl_requests.get(url, impersonate="chrome")
+        soup = BeautifulSoup(response.text, 'html.parser')
+        normalized_jobs = []
+        
+        # Look for the specific job card container structure
+        for a_tag in soup.find_all('a', href=True):
+            href = a_tag.get('href', '')
+            title = a_tag.text.strip()
+            
+            # This regex matches the new structure: /en/job-4/123456/title...
+            import re
+            if re.search(r'/job-\d+/', href) and len(title) > 5:
+                full_link = href if href.startswith('http') else f"https://www.careerbeacon.com{href}"
+                job_id = hashlib.md5(full_link.encode('utf-8')).hexdigest()
+                
+                normalized_jobs.append({
+                    "id": job_id,
+                    "title": title,
+                    "link": full_link
+                })
+        
+        unique_jobs = {job['id']: job for job in normalized_jobs}.values()
+        print(f"CareerBeacon: fetched {len(unique_jobs)} jobs")
+        return list(unique_jobs)
+    
+    except Exception as e:
+        print(f"Error fetching CareerBeacon: {e}")
+        return []
+
+def fetch_job_description(link):
+    try:
+        response = curl_requests.get(link, impersonate="chrome", timeout=10)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Most job boards put the description in a 'div' or 'section'
+        # We grab all text and join it
+        description = soup.get_text(separator=' ', strip=True).lower()
+        return description
+    except Exception as e:
+        print(f"Could not fetch description for {link}: {e}")
+        return ""
+
+def has_forbidden_experience_in_text(text):
+    # This list can be expanded if you find other sneaky ways they write requirements
+    forbidden_patterns = [
+        "5+ years", "5 years of experience", "5+ years of experience",
+        "2+ years", "2 years of experience", "2+ years of experience",
+        "minimum 3 years", "minimum 4 years", "minimum 5 years", "3+ years", "4+ years"
+    ]
+    return any(pattern in text for pattern in forbidden_patterns)
+
+def process_jobs(jobs, company_name, c, conn, test_persona=None): 
     for job in jobs:
         try:
-            if not (is_target_field(job['title']) and is_entry_level(job['title'])):
+            if not is_entry_level(job['title']):
                 continue
+
+            # First pass: check if persona matches
+            personas = check_personas(job['title'])
+            if not personas:
+                continue
+                
+            if test_persona and test_persona not in personas:
+                continue
+            
+            # --- NEW: Check description for experience requirements ---
+            description = fetch_job_description(job['link'])
+            if has_forbidden_experience_in_text(description):
+                print(f"[x] SKIPPING (Exp in Description): {job['title']}")
+                continue
+            # ----------------------------------------------------------
 
             job_id = f"{company_name}_{get_safe_id(job)}"
 
             c.execute("SELECT 1 FROM seen_jobs WHERE job_id = ?", (job_id,))
             if not c.fetchone():
-                print(f"✅ MATCH FOUND: {job['title']} at {company_name}")
-                notify_discord(job['title'], job['link'], company_name)
+                personas_to_notify = [p for p in personas if not test_persona or p == test_persona]
+                
+                for persona in personas_to_notify:
+                    print(f"[+] MATCH FOUND ({persona.upper()}): {job['title']} at {company_name}")
+                    notify_discord(job['title'], job['link'], company_name, persona)
                 
                 c.execute(
                     "INSERT INTO seen_jobs (job_id, title, company, link, first_seen) VALUES (?, ?, ?, ?, ?)",
                     (job_id, job['title'], company_name, job['link'], time.strftime('%Y-%m-%d %H:%M:%S'))
                 )
                 conn.commit()
+                # Added sleep to be polite to the job sites while we scrape their pages
+                time.sleep(random.uniform(1.0, 2.0)) 
         except Exception as e:
             print(f"Error: Failed to process job {job.get('title', 'Unknown')} at {company_name}: {e}")
+
 
 def main():
     conn, c = get_db_connection()
@@ -303,35 +398,43 @@ def main():
         conn.close()
         return
 
-    test_targets = [] # change this to test specific company, if left empty it will test everything in the companies.json
+    # --- MASTER SWITCHES ---
+    test_targets = []          # Leave empty to test all companies, or add ["Loblaw", "CareerBeacon"]
+    test_persona = "friend"    # Set to "friend", "me", or None (to test both)
 
-    for company in config.get('workday', []):
-        if not test_targets or company["name"] in test_targets:
-            jobs = fetch_workday_jobs(company)
-            process_jobs(jobs, company["name"], c, conn)
-            time.sleep(random.uniform(2, 4))
+    # for company in config.get('workday', []):
+    #     if not test_targets or company["name"] in test_targets:
+    #         jobs = fetch_workday_jobs(company)
+    #         process_jobs(jobs, company["name"], c, conn, test_persona)
+    #         time.sleep(random.uniform(2, 4))
 
-    for company in config.get('phenom', []):
-        if not test_targets or company["name"] in test_targets:
-            jobs = fetch_phenom_jobs(company)
-            process_jobs(jobs, company["name"], c, conn)
-            time.sleep(random.uniform(2, 4))
+    # for company in config.get('phenom', []):
+    #     if not test_targets or company["name"] in test_targets:
+    #         jobs = fetch_phenom_jobs(company)
+    #         process_jobs(jobs, company["name"], c, conn, test_persona)
+    #         time.sleep(random.uniform(2, 4))
 
-    for company in config.get('successfactors', []):
-        if not test_targets or company["name"] in test_targets:
-            jobs = fetch_successfactors_jobs(company, max_pages=10)
-            process_jobs(jobs, company["name"], c, conn)
-            time.sleep(random.uniform(2, 4))
+    # for company in config.get('successfactors', []):
+    #     if not test_targets or company["name"] in test_targets:
+    #         jobs = fetch_successfactors_jobs(company, max_pages=10)
+    #         process_jobs(jobs, company["name"], c, conn, test_persona)
+    #         time.sleep(random.uniform(2, 4))
 
-    for company in config.get('greenhouse', []):
-        if not test_targets or company["name"] in test_targets:
-            jobs = fetch_greenhouse_jobs(company)
-            process_jobs(jobs, company["name"], c, conn)
-            time.sleep(random.uniform(1.5, 3))
+    # for company in config.get('greenhouse', []):
+    #     if not test_targets or company["name"] in test_targets:
+    #         jobs = fetch_greenhouse_jobs(company)
+    #         process_jobs(jobs, company["name"], c, conn, test_persona)
+    #         time.sleep(random.uniform(1.5, 3))
 
-    if not test_targets or "Eluta" in test_targets:
-        eluta_jobs = fetch_eluta()
-        process_jobs(eluta_jobs, "Eluta", c, conn)  
+    # if not test_targets or "Eluta" in test_targets:
+    #     if not test_persona or test_persona == "me":
+    #         eluta_jobs = fetch_eluta()
+    #         process_jobs(eluta_jobs, "Eluta", c, conn, test_persona)  
+
+    if not test_targets or "CareerBeacon" in test_targets:
+        if not test_persona or test_persona == "friend":
+            cb_jobs = fetch_careerbeacon()
+            process_jobs(cb_jobs, "CareerBeacon", c, conn, test_persona)
 
     print("Done.")
     conn.close()
