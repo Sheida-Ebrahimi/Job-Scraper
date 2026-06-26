@@ -46,13 +46,13 @@ def check_personas(title):
     my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
     if any(keyword in title_lower for keyword in my_keywords):
         personas.append("me")
-    friend_keywords = ["payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator"]
+    friend_keywords = ["financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator"]
     if any(keyword in title_lower for keyword in friend_keywords):
         personas.append("friend")
     return personas
 
 def is_entry_level(title):
-    seniority_flags = ["senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp"]
+    seniority_flags = ["intermediate","senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp"]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
 
