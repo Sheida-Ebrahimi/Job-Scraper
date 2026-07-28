@@ -33,7 +33,7 @@
     {
       "name": "RBC",
       "url": "https://rbc.wd3.myworkdayjobs.com/wday/cxs/rbc/rbcglobal1/jobs",
-      "base_url": "https://rbc.wd3.myworkdayjobs.com/rbcglobal1?Country=a30a87ed25634629aa6c3958aa2b91ea",
+      "base_url": "https://rbc.wd3.myworkdayjobs.com/rbcglobal1",
       "payload": {"appliedFacets":{"Country":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
     },
     {
@@ -125,6 +125,11 @@
       "name": "Scotiabank",
       "search_url": "https://jobs.scotiabank.com/search/?q=&locationsearch=Toronto",
       "base_url": "https://jobs.scotiabank.com"
+    },
+    {
+      "name": "TELUS",
+      "search_url": "https://careers.telus.com/search?locale=en_US&utm_source=careersite&utm_campaign=TELUS.COM/CAREERS_TopCTA",
+      "base_url": "https://careers.telus.com"
     },
     {
       "name": "City of Toronto",
