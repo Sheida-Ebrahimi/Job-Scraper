@@ -31,6 +31,12 @@
       "payload": {"appliedFacets": {"timeType": ["382086945f8001182c270bf1860a7f00"], "Country": ["a30a87ed25634629aa6c3958aa2b91ea"], "City": ["5a781e4ad9710113e8f4efbb1701cf1a", "b95eb8c55e341001547de090da5d0000", "5a781e4ad97101047818f3db1701363b", "5a781e4ad97101140319dbb517015508", "5a781e4ad9710142c57479dc17012a3d", "5a781e4ad97101be1db246dc17017b3c"]}, "limit": 20, "offset": 0, "searchText": ""}
     },
     {
+      "name": "RBC",
+      "url": "https://rbc.wd3.myworkdayjobs.com/wday/cxs/rbc/rbcglobal1/jobs",
+      "base_url": "https://rbc.wd3.myworkdayjobs.com/rbcglobal1?Country=a30a87ed25634629aa6c3958aa2b91ea",
+      "payload": {"appliedFacets":{"Country":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
       "name": "TD Bank",
       "url": "https://td.wd3.myworkdayjobs.com/wday/cxs/td/TD_Bank_Careers/jobs",
       "base_url": "https://td.wd3.myworkdayjobs.com/en-US/TD_Bank_Careers",
