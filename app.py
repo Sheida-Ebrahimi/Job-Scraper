@@ -43,7 +43,7 @@ def get_safe_id(job):
 def check_personas(title):
     title_lower = title.lower()
     personas = []
-    my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile"]
+    my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst"]
     if any(keyword in title_lower for keyword in my_keywords):
         personas.append("me")
     friend_keywords = ["financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator"]
@@ -227,5 +227,5 @@ def lambda_handler(event, context):
         process_jobs(fetch_successfactors_jobs(company), company["name"], table)
     for company in config.get('greenhouse', []):
         process_jobs(fetch_greenhouse_jobs(company), company["name"], table)
-    process_jobs(fetch_careerbeacon(), "CareerBeacon", table)
+    # process_jobs(fetch_careerbeacon(), "CareerBeacon", table)
     return {'statusCode': 200, 'body': 'Scrape completed'}
