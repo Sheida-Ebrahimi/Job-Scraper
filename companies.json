@@ -83,6 +83,24 @@
       "url": "https://otppb.wd3.myworkdayjobs.com/wday/cxs/otppb/OntarioTeachers_Careers/jobs",
       "base_url": "https://otppb.wd3.myworkdayjobs.com/OntarioTeachers_Careers",
       "payload": {"appliedFacets":{"locations":["b6f626b7ab7701a0ae5ecf057c39295f"]},"limit":20,"offset":0,"searchText":""}
+    },
+    {
+      "name": "HOOPP",
+      "url": "https://hoopp.wd10.myworkdayjobs.com/wday/cxs/hoopp/HOOPP/jobs",
+      "base_url": "https://hoopp.wd10.myworkdayjobs.com/en-US/HOOPP",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+    },
+    {
+      "name": "CPP Investments",
+      "url": "https://cppib.wd10.myworkdayjobs.com/wday/cxs/cppib/cppinvestments/jobs",
+      "base_url": "https://cppib.wd10.myworkdayjobs.com/cppinvestments",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+    },
+    {
+      "name": "Enbridge",
+      "url": "https://enbridge.wd3.myworkdayjobs.com/wday/cxs/enbridge/enbridge_careers/jobs",
+      "base_url": "https://enbridge.wd3.myworkdayjobs.com/enbridge_careers",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
     }
   ],
   "phenom": [
@@ -138,8 +156,13 @@
     },
     {
       "name": "MPAC",
-      "search_url": "https://careers.mpac.ca/search/?q=&locationsearch=Ontario",
+      "search_url": "https://careers.mpac.ca/search/?createNewAlert=false&q=&locationsearch=",
       "base_url": "https://careers.mpac.ca"
+    },
+    {
+      "name": "OPG",
+      "search_url": "https://jobs.opg.com/search/?searchby=location&createNewAlert=false&q=&locationsearch=&geolocation=",
+      "base_url": "https://jobs.opg.com"
     }
   ],
   "greenhouse": [
@@ -147,6 +170,21 @@
       "name": "Pinterest",
       "board_token": "pinterest",
       "locations": ["toronto", "canada"]
+    },
+    {
+      "name": "Klick Health",
+      "board_token": "klick",
+      "locations": ["toronto", "ontario", "remote"]
+    },
+    {
+      "name": "PointClickCare",
+      "board_token": "pointclickcare",
+      "locations": ["toronto", "ontario", "remote"]
+    },
+    {
+      "name": "Ecobee",
+      "board_token": "ecobee",
+      "locations": ["toronto", "ontario"]
     }
   ],
   "oracle": [
