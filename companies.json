@@ -101,6 +101,18 @@
       "url": "https://enbridge.wd3.myworkdayjobs.com/wday/cxs/enbridge/enbridge_careers/jobs",
       "base_url": "https://enbridge.wd3.myworkdayjobs.com/enbridge_careers",
       "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+    },
+    {
+      "name": "TMX Group",
+      "url": "https://tmx.wd3.myworkdayjobs.com/wday/cxs/tmx/TMX_Careers/jobs",
+      "base_url": "https://tmx.wd3.myworkdayjobs.com/en-US/TMX_Careers",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
+    },
+    {
+      "name": "Canada Life",
+      "url": "https://empower.wd12.myworkdayjobs.com/wday/cxs/empower/empower/jobs",
+      "base_url": "https://empower.wd12.myworkdayjobs.com/en-US/empower",
+      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
     }
   ],
   "phenom": [
@@ -163,6 +175,16 @@
       "name": "OPG",
       "search_url": "https://jobs.opg.com/search/?searchby=location&createNewAlert=false&q=&locationsearch=&geolocation=",
       "base_url": "https://jobs.opg.com"
+    },
+    {
+      "name": "Hydro One",
+      "search_url": "https://jobs.hydroone.com/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_dept=&optionsFacetsDD_shifttype=",
+      "base_url": "https://jobs.hydroone.com"
+    },
+    {
+      "name": "Canada Life",
+      "search_url": "https://jobs.canadalife.com/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_location=&optionsFacetsDD_country=&optionsFacetsDD_department=",
+      "base_url": "https://jobs.canadalife.com"
     }
   ],
   "greenhouse": [
@@ -185,6 +207,16 @@
       "name": "Ecobee",
       "board_token": "ecobee",
       "locations": ["toronto", "ontario"]
+    },
+    {
+      "name": "Geotab",
+      "board_token": "geotab",
+      "locations": ["toronto", "ontario", "remote"]
+    },
+    {
+      "name": "Wealthsimple",
+      "board_token": "wealthsimple",
+      "locations": ["toronto", "ontario", "remote", "canada"]
     }
   ],
   "oracle": [
