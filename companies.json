@@ -109,7 +109,7 @@
       "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"searchText":""}
     },
     {
-      "name": "Canada Life",
+      "name": "Empower",
       "url": "https://empower.wd12.myworkdayjobs.com/wday/cxs/empower/empower/jobs",
       "base_url": "https://empower.wd12.myworkdayjobs.com/en-US/empower",
       "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"searchText":""}
@@ -225,6 +225,12 @@
       "api_url": "https://hdks.fa.ca2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=all",
       "base_url": "https://hdks.fa.ca2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Careers-Definity/job/",
       "payload": {"finder": "findReqs;siteNumber=CX_1001,facetsList=LOCATIONS%3BWORK_LOCATIONS%3BWORKPLACE_TYPES%3BTITLES%3BCATEGORIES%3BORGANIZATIONS%3BPOSTING_DATES%3BFLEX_FIELDS"}
+    },
+    {
+      "name": "Metrolinx",
+      "api_url": "https://ehtc.fa.ca2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEUserTrackings",
+      "base_url": "https://ehtc.fa.ca2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/",
+      "payload": {"UserId":"e4fe0da8-ec47-4b51-9e57-47d5140568b9","CandidateNumber":"","TemporaryUserId":null,"Content":"{\"entity\":\"REQUISITION\",\"action\":\"SEARCH\",\"identifier\":null,\"siteNumber\":\"CX_1\",\"attributes\":{\"searchKey\":null},\"source\":{\"sourceTrackingId\":null,\"referrerHeader\":null},\"location\":{\"settlement\":\"\",\"municipality\":\"\",\"region\":\"\",\"country\":\"\"}}"}
     }
   ]
 }

@@ -195,6 +195,52 @@ def fetch_careerbeacon():
         logger.error(f"Error fetching CareerBeacon: {e}")
         return []
 
+def fetch_oracle_jobs(company):
+    logger.info(f"Fetching Oracle: {company['name']}...")
+    normalized_jobs = []
+    offset = 0
+    limit = 25
+    
+    while True:
+        params = company.get("payload", {}).copy()
+        params.update({"offset": offset, "limit": limit})
+        
+        try:
+            response = requests.get(company["api_url"], params=params, timeout=10)
+            if response.status_code != 200:
+                logger.warning(f"{company['name']} returned {response.status_code}")
+                break
+                
+            data = response.json()
+            items = data.get('items', [])
+            if not items:
+                break
+                
+            job_list = items[0].get('requisitionList', [])
+            if not job_list:
+                break
+                
+            for job in job_list:
+                job_id = str(job.get('Id', ''))
+                title = job.get('Title', '')
+                full_link = f"{company['base_url']}{job_id}"
+                
+                normalized_jobs.append({
+                    "id": job_id,
+                    "title": title,
+                    "link": full_link
+                })
+                
+            logger.info(f"{company['name']}: fetched {offset + len(job_list)} jobs")
+            offset += limit
+            time.sleep(random.uniform(1.5, 3.0))
+            
+        except Exception as e:
+            logger.error(f"Oracle error for {company['name']}: {e}")
+            break
+            
+    return normalized_jobs
+
 def process_jobs(jobs, company_name, table): 
     for job in jobs:
         try:
@@ -227,5 +273,8 @@ def lambda_handler(event, context):
         process_jobs(fetch_successfactors_jobs(company), company["name"], table)
     for company in config.get('greenhouse', []):
         process_jobs(fetch_greenhouse_jobs(company), company["name"], table)
+    for company in config.get('oracle', []):
+        process_jobs(fetch_oracle_jobs(company), company["name"], table)
+        time.sleep(random.uniform(1.5, 3))
     # process_jobs(fetch_careerbeacon(), "CareerBeacon", table)
     return {'statusCode': 200, 'body': 'Scrape completed'}
