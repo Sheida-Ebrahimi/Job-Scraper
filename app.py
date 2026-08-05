@@ -46,7 +46,7 @@ def check_personas(title):
     my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst"]
     if any(keyword in title_lower for keyword in my_keywords):
         personas.append("me")
-    friend_keywords = ["financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator"]
+    friend_keywords = ["financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator", "software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst"]
     if any(keyword in title_lower for keyword in friend_keywords):
         personas.append("friend")
     return personas
