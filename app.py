@@ -43,10 +43,10 @@ def get_safe_id(job):
 def check_personas(title):
     title_lower = title.lower()
     personas = []
-    my_keywords = ["software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst"]
+    my_keywords = ["ml","software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst","systems","data entry"]
     if any(keyword in title_lower for keyword in my_keywords):
         personas.append("me")
-    friend_keywords = ["financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator", "software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst", "systems"]
+    friend_keywords = ["ml","financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator", "software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst", "systems"]
     if any(keyword in title_lower for keyword in friend_keywords):
         personas.append("friend")
     return personas
