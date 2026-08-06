@@ -185,6 +185,11 @@
       "name": "Canada Life",
       "search_url": "https://jobs.canadalife.com/search/?createNewAlert=false&q=&locationsearch=&optionsFacetsDD_location=&optionsFacetsDD_country=&optionsFacetsDD_department=",
       "base_url": "https://jobs.canadalife.com"
+    },
+    {
+      "name": "EY",
+      "search_url": "https://careers.ey.com/ey/search/?createNewAlert=false&q=&optionsFacetsDD_customfield1=&optionsFacetsDD_country=CA&optionsFacetsDD_city=Toronto",
+      "base_url": "https://careers.ey.com/"
     }
   ],
   "greenhouse": [
