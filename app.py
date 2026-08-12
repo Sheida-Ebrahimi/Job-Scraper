@@ -42,32 +42,27 @@ def get_safe_id(job):
 
 def check_personas(title):
     title_lower = title.lower()
-    personas = []
-    my_keywords = ["ml","software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst","systems","data entry"]
-    if any(keyword in title_lower for keyword in my_keywords):
-        personas.append("me")
-    friend_keywords = ["ml","financial services back office","payment", "operations", "back office", "transaction", "qa", "software engineer in test", "sdet", "quality assurance", "data entry", "fraud", "aml", "helpdesk", "service desk", "claims", "compliance", "coordinator", "software", "developer", "analyst", "data", "data science", "python", "react", "sql", "machine learning", "agentic", "scientist", "mobile", "business analyst", "systems"]
-    if any(keyword in title_lower for keyword in friend_keywords):
-        personas.append("friend")
-    return personas
+    keywords = [
+        "ml", "software", "developer", "analyst", "data", "data science", 
+        "python", "react", "sql", "machine learning", "agentic", "scientist", 
+        "mobile", "business analyst", "systems", "data entry", "payment", 
+        "operations", "back office", "transaction", "qa", "software engineer in test", 
+        "sdet", "quality assurance", "fraud", "aml", "helpdesk", "service desk", 
+        "claims", "compliance", "coordinator"
+    ]
+    if any(keyword in title_lower for keyword in keywords):
+        return ["me", "friend"]
+    return []
 
 def is_entry_level(title):
-    seniority_flags = ["intermediate","senior", "sr", "lead", "principal", "staff", "manager", "director", "student", "mortgage", "co-op", "bilingual", "head", "management", "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp", "vice president", "mainframe", "actuarial"]
+    seniority_flags = [
+        "intermediate", "senior", "sr", "lead", "principal", "staff", "manager", 
+        "director", "student", "mortgage", "co-op", "bilingual", "head", "management", 
+        "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp", 
+        "vice president", "mainframe", "actuarial"
+    ]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
-
-def fetch_job_description(link):
-    try:
-        response = curl_requests.get(link, impersonate="chrome", timeout=10)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        return soup.get_text(separator=' ', strip=True).lower()
-    except Exception as e:
-        logger.error(f"Could not fetch description for {link}: {e}")
-        return ""
-
-def has_forbidden_experience_in_text(text):
-    forbidden_patterns = ["5+ years", "5 years of experience", "5+ years of experience",  "minimum 3 years", "minimum 4 years", "minimum 5 years", "3+ years", "4+ years"]
-    return any(pattern in text for pattern in forbidden_patterns)
 
 def fetch_workday_jobs(company):
     logger.info(f"Fetching Workday: {company['name']}...")
@@ -175,70 +170,34 @@ def fetch_greenhouse_jobs(company):
         logger.error(f"Greenhouse error: {e}")
         return []
 
-def fetch_careerbeacon():
-    import re
-    logger.info("Fetching CareerBeacon...")
-    query = "Payment Processing Analyst,Operations Analyst,Back Office Operations Associate,Banking Operations Coordinator,Transaction Processing Specialist,QA,Software Engineer in Test"
-    url = f"https://www.careerbeacon.com/en/search?q={requests.utils.quote(query)}&l=Ontario"
-    try:
-        response = curl_requests.get(url, impersonate="chrome")
-        soup = BeautifulSoup(response.text, 'html.parser')
-        normalized_jobs = []
-        for a_tag in soup.find_all('a', href=True):
-            href = a_tag.get('href', '')
-            title = a_tag.text.strip()
-            if re.search(r'/job-\d+/', href) and len(title) > 5:
-                full_link = href if href.startswith('http') else f"https://www.careerbeacon.com{href}"
-                normalized_jobs.append({"id": hashlib.md5(full_link.encode('utf-8')).hexdigest(), "title": title, "link": full_link})
-        return list({job['id']: job for job in normalized_jobs}.values())
-    except Exception as e:
-        logger.error(f"Error fetching CareerBeacon: {e}")
-        return []
-
 def fetch_oracle_jobs(company):
     logger.info(f"Fetching Oracle: {company['name']}...")
     normalized_jobs = []
     offset = 0
     limit = 25
-    
     while True:
         params = company.get("payload", {}).copy()
         params.update({"offset": offset, "limit": limit})
-        
         try:
             response = requests.get(company["api_url"], params=params, timeout=10)
             if response.status_code != 200:
                 logger.warning(f"{company['name']} returned {response.status_code}")
                 break
-                
             data = response.json()
             items = data.get('items', [])
-            if not items:
-                break
-                
+            if not items: break
             job_list = items[0].get('requisitionList', [])
-            if not job_list:
-                break
-                
+            if not job_list: break
             for job in job_list:
                 job_id = str(job.get('Id', ''))
                 title = job.get('Title', '')
                 full_link = f"{company['base_url']}{job_id}"
-                
-                normalized_jobs.append({
-                    "id": job_id,
-                    "title": title,
-                    "link": full_link
-                })
-                
-            logger.info(f"{company['name']}: fetched {offset + len(job_list)} jobs")
+                normalized_jobs.append({"id": job_id, "title": title, "link": full_link})
             offset += limit
             time.sleep(random.uniform(1.5, 3.0))
-            
         except Exception as e:
             logger.error(f"Oracle error for {company['name']}: {e}")
             break
-            
     return normalized_jobs
 
 def process_jobs(jobs, company_name, table): 
@@ -247,14 +206,11 @@ def process_jobs(jobs, company_name, table):
             if not is_entry_level(job['title']): continue
             personas = check_personas(job['title'])
             if not personas: continue
-            description = fetch_job_description(job['link'])
-            if has_forbidden_experience_in_text(description): continue
             job_id = f"{company_name}_{get_safe_id(job)}"
             if 'Item' not in table.get_item(Key={'job_id': job_id}):
                 for persona in personas:
                     notify_discord(job['title'], job['link'], company_name, persona)
                 table.put_item(Item={'job_id': job_id, 'title': job['title'], 'company': company_name, 'link': job['link'], 'first_seen': time.strftime('%Y-%m-%d %H:%M:%S')})
-                time.sleep(random.uniform(1.0, 2.0))
         except Exception as e:
             logger.error(f"Failed to process job {job.get('title', 'Unknown')} at {company_name}: {e}")
 
@@ -275,6 +231,4 @@ def lambda_handler(event, context):
         process_jobs(fetch_greenhouse_jobs(company), company["name"], table)
     for company in config.get('oracle', []):
         process_jobs(fetch_oracle_jobs(company), company["name"], table)
-        time.sleep(random.uniform(1.5, 3))
-    # process_jobs(fetch_careerbeacon(), "CareerBeacon", table)
     return {'statusCode': 200, 'body': 'Scrape completed'}
