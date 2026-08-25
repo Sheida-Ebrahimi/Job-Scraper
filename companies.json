@@ -117,17 +117,6 @@
   ],
   "phenom": [
     {
-      "name": "RBC",
-      "api_url": "https://jobs.rbc.com/widgets",
-      "base_url": "https://jobs.rbc.com/ca/en",
-      "payload": {
-        "country": "ca", "lang": "en_ca", "deviceType": "desktop",
-        "ddoKey": "refineSearch", "siteType": "external",
-        "jobs": true,
-        "selected_fields": {"state": ["Ontario"]}
-      }
-    },
-    {
       "name": "Bell",
       "api_url": "https://jobs.bell.ca/widgets",
       "base_url": "https://jobs.bell.ca/ca/en",
