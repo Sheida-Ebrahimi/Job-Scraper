@@ -85,18 +85,6 @@
       "payload": {"appliedFacets":{"locations":["b6f626b7ab7701a0ae5ecf057c39295f"]},"limit":20,"offset":0,"searchText":""}
     },
     {
-      "name": "HOOPP",
-      "url": "https://hoopp.wd10.myworkdayjobs.com/wday/cxs/hoopp/HOOPP/jobs",
-      "base_url": "https://hoopp.wd10.myworkdayjobs.com/en-US/HOOPP",
-      "payload": {"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ""}
-    },
-    {
-      "name": "CPP Investments",
-      "url": "https://cppib.wd10.myworkdayjobs.com/wday/cxs/cppib/cppinvestments/jobs",
-      "base_url": "https://cppib.wd10.myworkdayjobs.com/cppinvestments",
-      "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"searchText":""}
-    },
-    {
       "name": "Enbridge",
       "url": "https://enbridge.wd3.myworkdayjobs.com/wday/cxs/enbridge/enbridge_careers/jobs",
       "base_url": "https://enbridge.wd3.myworkdayjobs.com/enbridge_careers",
@@ -106,12 +94,6 @@
       "name": "TMX Group",
       "url": "https://tmx.wd3.myworkdayjobs.com/wday/cxs/tmx/TMX_Careers/jobs",
       "base_url": "https://tmx.wd3.myworkdayjobs.com/en-US/TMX_Careers",
-      "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"searchText":""}
-    },
-    {
-      "name": "Empower",
-      "url": "https://empower.wd12.myworkdayjobs.com/wday/cxs/empower/empower/jobs",
-      "base_url": "https://empower.wd12.myworkdayjobs.com/en-US/empower",
       "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"searchText":""}
     }
   ],
@@ -182,49 +164,9 @@
     }
   ],
   "greenhouse": [
-    {
-      "name": "Pinterest",
-      "board_token": "pinterest",
-      "locations": ["toronto", "canada"]
-    },
-    {
-      "name": "Klick Health",
-      "board_token": "klick",
-      "locations": ["toronto", "ontario", "remote"]
-    },
-    {
-      "name": "PointClickCare",
-      "board_token": "pointclickcare",
-      "locations": ["toronto", "ontario", "remote"]
-    },
-    {
-      "name": "Ecobee",
-      "board_token": "ecobee",
-      "locations": ["toronto", "ontario"]
-    },
-    {
-      "name": "Geotab",
-      "board_token": "geotab",
-      "locations": ["toronto", "ontario", "remote"]
-    },
-    {
-      "name": "Wealthsimple",
-      "board_token": "wealthsimple",
-      "locations": ["toronto", "ontario", "remote", "canada"]
-    }
+    
   ],
   "oracle": [
-    {
-      "name": "Definity",
-      "api_url": "https://hdks.fa.ca2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=all",
-      "base_url": "https://hdks.fa.ca2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/Careers-Definity/job/",
-      "payload": {"finder": "findReqs;siteNumber=CX_1001,facetsList=LOCATIONS%3BWORK_LOCATIONS%3BWORKPLACE_TYPES%3BTITLES%3BCATEGORIES%3BORGANIZATIONS%3BPOSTING_DATES%3BFLEX_FIELDS"}
-    },
-    {
-      "name": "Metrolinx",
-      "api_url": "https://ehtc.fa.ca2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEUserTrackings",
-      "base_url": "https://ehtc.fa.ca2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/",
-      "payload": {"UserId":"e4fe0da8-ec47-4b51-9e57-47d5140568b9","CandidateNumber":"","TemporaryUserId":null,"Content":"{\"entity\":\"REQUISITION\",\"action\":\"SEARCH\",\"identifier\":null,\"siteNumber\":\"CX_1\",\"attributes\":{\"searchKey\":null},\"source\":{\"sourceTrackingId\":null,\"referrerHeader\":null},\"location\":{\"settlement\":\"\",\"municipality\":\"\",\"region\":\"\",\"country\":\"\"}}"}
-    }
+    
   ]
 }
