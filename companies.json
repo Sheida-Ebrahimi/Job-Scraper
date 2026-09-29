@@ -1,12 +1,6 @@
 {
   "workday": [
     {
-      "name": "Hitachi",
-      "url": "https://gtsgbu.wd3.myworkdayjobs.com/wday/cxs/gtsgbu/Careers/jobs",
-      "base_url": "https://gtsgbu.wd3.myworkdayjobs.com/en-US/Careers",
-      "payload": {"appliedFacets":{"locationCountry":["a30a87ed25634629aa6c3958aa2b91ea"]},"limit":20,"offset":0,"searchText":""}
-    },
-    {
       "name": "Fidelity Canada",
       "url": "https://fil.wd3.myworkdayjobs.com/wday/cxs/fil/fidelitycanada/jobs",
       "base_url": "https://fil.wd3.myworkdayjobs.com/fidelitycanada",
@@ -161,6 +155,11 @@
       "name": "EY",
       "search_url": "https://careers.ey.com/ey/search/?createNewAlert=false&q=&optionsFacetsDD_customfield1=&optionsFacetsDD_country=CA&optionsFacetsDD_city=Toronto",
       "base_url": "https://careers.ey.com/"
+    },
+    {
+      "name": "Deloitte",
+      "search_url": "https://careers.deloitte.ca/search/?q=&searchResultView=LIST&markerViewed=&carouselIndex=&facetFilters=%7B%22mfield1%22%3A%5B%22Toronto%2C+ON%22%5D%7D&pageNumber=0",
+      "base_url": "https://careers.deloitte.ca"
     }
   ],
   "greenhouse": [

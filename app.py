@@ -47,8 +47,7 @@ def check_personas(title):
         "python", "react", "sql", "machine learning", "agentic", "scientist", 
         "mobile", "business analyst", "systems", "data entry", "payment", 
         "operations", "back office", "transaction", "qa", "software engineer in test", 
-        "sdet", "quality assurance", "fraud", "aml", "helpdesk", "service desk", 
-        "claims", "compliance", "coordinator"
+        "sdet", "quality assurance", "fraud", "aml", "helpdesk", "service desk"
     ]
     if any(keyword in title_lower for keyword in keywords):
         return ["me", "friend"]
@@ -59,7 +58,7 @@ def is_entry_level(title):
         "intermediate", "senior", "sr", "lead", "principal", "staff", "manager", 
         "director", "student", "mortgage", "co-op", "bilingual", "head", "management", 
         "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp", 
-        "vice president", "mainframe", "actuarial", "consultant"
+        "vice president", "mainframe", "actuarial", "consultant", "cpa", "risk"
     ]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
@@ -151,6 +150,37 @@ def fetch_successfactors_jobs(company, max_pages=10):
         except Exception: break
     return normalized_jobs
 
+def fetch_hitachi_jobs():
+    import re
+    logger.info("Fetching Hitachi...")
+    url = "https://careers.hitachi.com/jobs?filter%5Bcountry%5D%5B0%5D=Canada&filter%5Bstate%5D%5B0%5D=Ontario"
+    
+    try:
+        response = curl_requests.get(url, impersonate="chrome")
+        soup = BeautifulSoup(response.text, 'html.parser')
+        normalized_jobs = []
+        
+        for a_tag in soup.find_all('a', href=True):
+            href = a_tag.get('href', '')
+            title = a_tag.text.strip()
+            
+            if '/job/' in href and re.search(r'[R\d]+', href) and len(title) > 5:
+                full_link = href if href.startswith('http') else f"https://careers.hitachi.com{href}"
+                
+                normalized_jobs.append({
+                    "id": hashlib.md5(full_link.encode('utf-8')).hexdigest(),
+                    "title": title,
+                    "link": full_link
+                })
+                
+        unique_jobs = list({job['id']: job for job in normalized_jobs}.values())
+        logger.info(f"Hitachi: fetched {len(unique_jobs)} jobs")
+        return unique_jobs
+        
+    except Exception as e:
+        logger.error(f"Error fetching Hitachi: {e}")
+        return []
+
 def fetch_greenhouse_jobs(company):
     logger.info(f"Fetching Greenhouse: {company['name']}...")
     url = f"https://boards-api.greenhouse.io/v1/boards/{company['board_token']}/jobs"
@@ -221,6 +251,7 @@ def lambda_handler(event, context):
     except Exception as e:
         logger.error(f"Failed to load companies.json: {e}")
         return {'statusCode': 500, 'body': 'Config error'}
+    process_jobs(fetch_hitachi_jobs(), "Hitachi", table)
     for company in config.get('workday', []):
         process_jobs(fetch_workday_jobs(company), company["name"], table)
     for company in config.get('phenom', []):
