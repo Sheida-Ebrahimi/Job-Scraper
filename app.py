@@ -45,8 +45,7 @@ def check_personas(title):
     keywords = [
         "ml", "software", "developer", "analyst", "data", "data science", 
         "python", "react", "sql", "machine learning", "agentic", "scientist", 
-        "mobile", "business analyst", "systems", "data entry", "payment", 
-        "operations", "back office", "transaction", "qa", "software engineer in test", 
+        "mobile", "business analyst", "systems", "data entry", "payment", "back office", "transaction", "qa", "software engineer in test", 
         "sdet", "quality assurance", "fraud", "aml", "helpdesk", "service desk"
     ]
     if any(keyword in title_lower for keyword in keywords):
@@ -58,7 +57,7 @@ def is_entry_level(title):
         "intermediate", "senior", "sr", "lead", "principal", "staff", "manager", 
         "director", "student", "mortgage", "co-op", "bilingual", "head", "management", 
         "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp", 
-        "vice president", "mainframe", "actuarial", "consultant", "cpa", "risk"
+        "vice president", "mainframe", "actuarial", "consultant", "cpa", "risk", "vi"
     ]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
