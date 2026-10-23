@@ -57,7 +57,7 @@ def is_entry_level(title):
         "intermediate", "senior", "sr", "lead", "principal", "staff", "manager", 
         "director", "student", "mortgage", "co-op", "bilingual", "head", "management", 
         "ii", "iii", "intern", "chief", "advisor", "cfo", "supervisor", "vp", 
-        "vice president", "mainframe", "actuarial", "consultant", "cpa", "risk", "vi"
+        "vice president", "mainframe", "actuarial", "consultant", "cpa", "risk", "vi", "iv"
     ]
     title_lower = title.lower()
     return not any(flag in title_lower for flag in seniority_flags)
